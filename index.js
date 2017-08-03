@@ -34,24 +34,83 @@ const rl = readline.createInterface({
 //     });
 // });
 
-// Read and write: reads content of input file, converts text to all caps, writes contents to output file
-rl.question('Input file: ', (input) => {
-    rl.question('Output file: ', (output) => {
-        rl.close();   // closes interface
-        fs.readFile(input, (err, buffer) => {
-            if (err) {
-                console.log(err.message);
-                return;
-            }
-            var content = buffer.toString();
-            var upcased = content.toUpperCase();
-            fs.writeFile(output, upcased, (err) => {
+// Read and write: reads content of input file, converts text to all caps, writes contents to output file (will create file if it doesn't already exist)
+// rl.question('Input file: ', (input) => {
+//     rl.question('Output file: ', (output) => {
+//         rl.close();   // closes interface
+//         fs.readFile(input, (err, buffer) => {
+//             if (err) {
+//                 console.log(err.message);
+//                 return;
+//             }
+//             var content = buffer.toString();
+//             var upcased = content.toUpperCase();
+//             fs.writeFile(output, upcased, (err) => {
+//                 if (err) {
+//                     console.log(err.message);
+//                     return;
+//                 }
+//                 console.log("Wrote to file " + output);
+//             });
+//         });
+//     });
+// });
+
+
+// Saves HTML source code from web page to file
+// const request = require('request');
+
+// rl.question('URL: ', (URL) => {
+//     rl.close();
+//     request(URL, (err, response, body) => {
+//         if (err) {
+//             console.log(err.message);
+//             return;
+//         }
+//     let rl2 = readline.createInterface({
+//         input: process.stdin,
+//         output: process.stdout
+//     });
+//     rl2.question('Save to file: ', (filename) => {
+//         rl2.close();   // closes interface
+//             fs.writeFile(filename, body, (err) => {
+//                 if (err) {
+//                     console.log(err.message);
+//                     return;
+//                 }
+//                 console.log("Saved to file " + filename);
+//             });
+//         });
+//     });
+// });
+
+
+// Saves HTML source code from web page to file using request-promises
+const rp = require('request-promise');
+
+rl.question('URL: ', (URL) => {
+    rl.close();
+    rp(URL)
+    .then(function (htmlString) {
+        let rl2 = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+        rl2.question('Save to file: ', (filename) => {
+            rl2.close();   // closes interface
+            fs.writeFile(filename, htmlString, (err) => {
                 if (err) {
                     console.log(err.message);
                     return;
                 }
-                console.log("Wrote to file " + output);
+                console.log("Saved to file " + filename);
             });
         });
-    });
+    })
+    .catch((err) => {
+        if (err) {
+            console.log(err.message);
+            return err;
+        }
+    })
 });

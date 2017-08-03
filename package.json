@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lookup-multicast-dns": "^1.0.3"
+    "lookup-multicast-dns": "^1.0.3",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   }
 }
