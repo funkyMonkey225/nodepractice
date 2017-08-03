@@ -1,6 +1,5 @@
 const fs = require('fs');
 const readline = require('readline');
-const lookup = require('lookup-multicast-dns');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -22,6 +21,7 @@ const rl = readline.createInterface({
 // });
 
 // Looks up and prints out IP address for domain name
+// const lookup = require('lookup-multicast-dns');
 // rl.question('URL: ', (domain) => {
 //     rl.close();   // closes interface
 //     lookup(domain, (err, ip) => {
@@ -86,31 +86,78 @@ const rl = readline.createInterface({
 
 
 // Saves HTML source code from web page to file using request-promises
-const rp = require('request-promise');
+// const rp = require('request-promise');
 
-rl.question('URL: ', (URL) => {
-    rl.close();
-    rp(URL)
-    .then(function (htmlString) {
-        let rl2 = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        rl2.question('Save to file: ', (filename) => {
-            rl2.close();   // closes interface
-            fs.writeFile(filename, htmlString, (err) => {
-                if (err) {
-                    console.log(err.message);
-                    return;
-                }
-                console.log("Saved to file " + filename);
-            });
-        });
-    })
-    .catch((err) => {
-        if (err) {
+// rl.question('URL: ', (URL) => {
+//     rl.close();
+//     rp(URL)
+//     .then((htmlString) => {
+//         let rl2 = readline.createInterface({
+//             input: process.stdin,
+//             output: process.stdout
+//         });
+//         rl2.question('Save to file: ', (filename) => {
+//             rl2.close();   // closes interface
+//             fs.writeFile(filename, htmlString, (err) => {
+//                 if (err) {
+//                     console.log(err.message);
+//                     return;
+//                 }
+//                 console.log("Saved to file " + filename);
+//             });
+//         });
+//     })
+//     .catch((err) => {
+//         if (err) {
+//             console.log(err.message);
+//             return err;
+//         }
+//     })
+// });
+
+// Download JavaScript logo using request module and resize with gm module
+const request = require('request');
+const gm = require('gm');
+
+var options = {
+    url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
+    encoding: null
+};
+request(options, function(err, response, imageData) {
+    if (err) {
+        console.log(err.message);
+        return err;
+    }
+
+gm(imageData)
+    .resize(240, 240)
+    .write('JS2.png', function(err) {
+        if(err) {
             console.log(err.message);
-            return err;
         }
-    })
+        if(!err) {
+            console.log('done');
+        }
+    });
 });
+
+
+
+
+
+// Download JavaScript logo using request-promise module and resize with gm module
+// const rp = require('request-promise');
+// var options = {
+//   url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
+//   encoding: null
+// };
+// rp(options) 
+//     .then((response, imageData) => {
+//         console.log(imageData);
+//     })
+//     .catch((err) => {
+//         if (err) {
+//             console.log(err.message);
+//             return err;
+//         }
+//     });
