@@ -116,48 +116,59 @@ const rl = readline.createInterface({
 // });
 
 // Download JavaScript logo using request module and resize with gm module
-const request = require('request');
-const gm = require('gm');
+// const request = require('request');
+// const gm = require('gm');
 
-var options = {
-    url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
-    encoding: null
-};
-request(options, function(err, response, imageData) {
-    if (err) {
-        console.log(err.message);
-        return err;
-    }
+// var options = {
+//     url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
+//     encoding: null
+// };
+// request(options, function(err, response, imageData) {
+//     if (err) {
+//         console.log(err.message);
+//         return err;
+//     }
 
-gm(imageData)
-    .resize(240, 240)
-    .write('JS2.png', function(err) {
-        if(err) {
-            console.log(err.message);
-        }
-        if(!err) {
-            console.log('done');
-        }
-    });
-});
+// gm(imageData)
+//     .resize(240, 240)
+//     .write('JS2.png', function(err) {
+//         if(err) {
+//             console.log(err.message);
+//         }
+//         if(!err) {
+//             console.log('done');
+//         }
+//     });
+// });
 
 
 
 
 
 // Download JavaScript logo using request-promise module and resize with gm module
-// const rp = require('request-promise');
-// var options = {
-//   url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
-//   encoding: null
-// };
-// rp(options) 
-//     .then((response, imageData) => {
-//         console.log(imageData);
-//     })
-//     .catch((err) => {
-//         if (err) {
-//             console.log(err.message);
-//             return err;
-//         }
-//     });
+const rp = require('request-promise');
+const gm = require('gm');
+
+var options = {
+  url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
+  encoding: null
+};
+rp(options) 
+    .then((imageData) => {
+        gm(imageData)
+            .resize(240, 240)
+            .write('JS3.png', function(err) {
+                if(err) {
+                    console.log(err.message);
+                }
+                if(!err) {
+                    console.log('done');
+                }
+            });
+    })
+    .catch((err) => {
+        if (err) {
+            console.log(err.message);
+            return err;
+        }
+    });
