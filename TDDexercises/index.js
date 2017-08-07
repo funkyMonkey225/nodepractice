@@ -12,9 +12,7 @@ class File {
     constructor(){
 
     }
-    readFile() {
-        rl.question('What is the filename? ', (filename) => {
-        rl.close();   // closes interface
+    readFile(filename, callback) {
         fs.readFile(filename, (err, buffer) => {
             if (err) {
                 console.log(err.message);
@@ -22,46 +20,41 @@ class File {
             }
             let content = buffer.toString();
             let upcased = content.toUpperCase();
-            console.log(upcased);
-            });
+            callback(upcased);
         });
     }
-    dnsLookup() {
-        rl.question('URL: ', (domain) => {
-            rl.close();   // closes interface
-            lookup(domain, (err, ip) => {
-                if (err) {
-                    console.log(err.message);
-                    console.log("Site not found.")
-                    return;
-                }
-                console.log("IP Address: " + ip);
-            });
+    dnsLookup(domain, callback) {
+        lookup(domain, (err, ip) => {
+            if (err) {
+                console.log(err.message);
+                console.log("Site not found.")
+                return;
+            }
+            console.log(ip);
+            callback(ip);
         });
     }
-    readWrite() {
-        rl.question('Input file: ', (input) => {
-        rl.question('Output file: ', (output) => {
-            rl.close();   // closes interface
-            fs.readFile(input, (err, buffer) => {
+    readWrite(input, output, callback) {
+        fs.readFile(input, (err, buffer) => {
+            if (err) {
+                console.log(err.message);
+                return;
+            }
+            var content = buffer.toString();
+            var upcased = content.toUpperCase();
+            fs.writeFile(output, upcased, (err) => {
                 if (err) {
                     console.log(err.message);
                     return;
                 }
-                var content = buffer.toString();
-                var upcased = content.toUpperCase();
-                fs.writeFile(output, upcased, (err) => {
-                    if (err) {
-                        console.log(err.message);
-                        return;
-                    }
-                    console.log("Wrote to file " + output);
-                    });
-                });
+                var saved = "Wrote to file " + output;
+                callback(saved);
             });
         });
     }
 }
+
+
 
 module.exports = File;
 
