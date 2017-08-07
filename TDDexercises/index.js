@@ -1,5 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
+const lookup = require('lookup-multicast-dns');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -7,18 +8,62 @@ const rl = readline.createInterface({
 });
 
 // Converts content of a file to all caps, prints to console
-// rl.question('What is the filename? ', (filename) => {
-//     rl.close();   // closes interface
-//     fs.readFile(filename, (err, buffer) => {
-//         if (err) {
-//             console.log(err.message);
-//             return;
-//         }
-//         let content = buffer.toString();
-//         let upcased = content.toUpperCase();
-//         console.log(upcased);
-//     });
-// });
+class File {
+    constructor(){
+
+    }
+    readFile() {
+        rl.question('What is the filename? ', (filename) => {
+        rl.close();   // closes interface
+        fs.readFile(filename, (err, buffer) => {
+            if (err) {
+                console.log(err.message);
+                return;
+            }
+            let content = buffer.toString();
+            let upcased = content.toUpperCase();
+            console.log(upcased);
+            });
+        });
+    }
+    dnsLookup() {
+        rl.question('URL: ', (domain) => {
+            rl.close();   // closes interface
+            lookup(domain, (err, ip) => {
+                if (err) {
+                    console.log(err.message);
+                    console.log("Site not found.")
+                    return;
+                }
+                console.log("IP Address: " + ip);
+            });
+        });
+    }
+    readWrite() {
+        rl.question('Input file: ', (input) => {
+        rl.question('Output file: ', (output) => {
+            rl.close();   // closes interface
+            fs.readFile(input, (err, buffer) => {
+                if (err) {
+                    console.log(err.message);
+                    return;
+                }
+                var content = buffer.toString();
+                var upcased = content.toUpperCase();
+                fs.writeFile(output, upcased, (err) => {
+                    if (err) {
+                        console.log(err.message);
+                        return;
+                    }
+                    console.log("Wrote to file " + output);
+                    });
+                });
+            });
+        });
+    }
+}
+
+module.exports = File;
 
 // Looks up and prints out IP address for domain name
 // const lookup = require('lookup-multicast-dns');
@@ -146,29 +191,29 @@ const rl = readline.createInterface({
 
 
 // Download JavaScript logo using request-promise module and resize with gm module
-const rp = require('request-promise');
-const gm = require('gm');
+// const rp = require('request-promise');
+// const gm = require('gm');
 
-var options = {
-  url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
-  encoding: null
-};
-rp(options) 
-    .then((imageData) => {
-        gm(imageData)
-            .resize(240, 240)
-            .write('JS3.png', function(err) {
-                if(err) {
-                    console.log(err.message);
-                }
-                if(!err) {
-                    console.log('done');
-                }
-            });
-    })
-    .catch((err) => {
-        if (err) {
-            console.log(err.message);
-            return err;
-        }
-    });
+// var options = {
+//   url: 'https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.png',
+//   encoding: null
+// };
+// rp(options) 
+//     .then((imageData) => {
+//         gm(imageData)
+//             .resize(240, 240)
+//             .write('JS3.png', function(err) {
+//                 if(err) {
+//                     console.log(err.message);
+//                 }
+//                 if(!err) {
+//                     console.log('done');
+//                 }
+//             });
+//     })
+//     .catch((err) => {
+//         if (err) {
+//             console.log(err.message);
+//             return err;
+//         }
+//     });
