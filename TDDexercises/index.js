@@ -27,7 +27,6 @@ class File {
         lookup(domain, (err, ip) => {
             if (err) {
                 console.log(err.message);
-                console.log("Site not found.")
                 return;
             }
             console.log(ip);

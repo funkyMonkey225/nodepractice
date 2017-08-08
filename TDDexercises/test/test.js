@@ -25,6 +25,15 @@ describe('Can lookup URL', () => {
             }
         })
     })
+    it('Cannot lookup nonexistent URL', (done) => {
+        file.dnsLookup('aflsjf.com', (err) => {
+             if (err.message === "getaddrinfo ENOTFOUND aflsjf.com") {
+                done();
+            } else {
+                done(new Error('nope'));
+            }
+        })
+    })
 })
 
 describe('Read/write file', () => {
