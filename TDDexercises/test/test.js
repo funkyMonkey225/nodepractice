@@ -13,6 +13,13 @@ describe('Can read file', () => {
             }
         })
     })
+    it('Cannot read nonexistent file', (done) => {
+        let badFunction = () => {
+            file.readFile('heyya.md', () => {});
+            done();
+        }
+        expect(badFunction).to.throw();
+    })
 })
 
 describe('Can lookup URL', () => {

@@ -15,8 +15,7 @@ class File {
     readFile(filename, callback) {
         fs.readFile(filename, (err, buffer) => {
             if (err) {
-                console.log(err.message);
-                return;
+                throw new Error("Could not locate file.");
             }
             let content = buffer.toString();
             let upcased = content.toUpperCase();
