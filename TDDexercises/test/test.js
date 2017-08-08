@@ -26,13 +26,16 @@ describe('Can lookup URL', () => {
         })
     })
     it('Cannot lookup nonexistent URL', (done) => {
-        file.dnsLookup('aflsjf.com', (err) => {
-             if (err.message === "getaddrinfo ENOTFOUND aflsjf.com") {
-                done();
-            } else {
-                done(new Error('nope'));
-            }
-        })
+        let badFunction = () => {
+            file.dnsLookup('aflsjf.com', () => {});
+            done();
+        }
+            //  if (err.message === "getaddrinfo ENOTFOUND aflsjf.com") {
+            //     done();
+            // } else {
+            //     done(new Error('nope'));
+            // }
+        expect(badFunction).to.throw();
     })
 })
 
@@ -45,5 +48,12 @@ describe('Read/write file', () => {
                 done(new Error('nope'));
             }
         })
+    })
+    it('Cannot read nonexistent file', (done) => {
+        let badFunction = () => {
+            file.dnsLookup('heyya.md', 'shakeit.md', () => {});
+            done();
+        }
+        expect(badFunction).to.throw();
     })
 })

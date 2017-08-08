@@ -26,8 +26,7 @@ class File {
     dnsLookup(domain, callback) {
         lookup(domain, (err, ip) => {
             if (err) {
-                console.log(err.message);
-                return;
+                throw new Error('Could not locate URL');
             }
             console.log(ip);
             callback(ip);
@@ -36,8 +35,7 @@ class File {
     readWrite(input, output, callback) {
         fs.readFile(input, (err, buffer) => {
             if (err) {
-                console.log(err.message);
-                return;
+                throw new Error('Could not read file');
             }
             var content = buffer.toString();
             var upcased = content.toUpperCase();
